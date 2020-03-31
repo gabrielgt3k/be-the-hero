@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './styles.css';
 
@@ -8,9 +10,19 @@ import api from '../../services/api';
 import logoImg from '../../assets/logo.svg';
 import heroesImg from '../../assets/heroes.png';
 
-export default function Logon() {
+export default function Logon(props) {
   const [id, setId] = useState('');
   const history = useHistory();
+  const notify = () => {
+    toast.error(' Falha ao fazer logon, tente novamente!', {
+      position: 'top-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -23,7 +35,7 @@ export default function Logon() {
 
       history.push('/profile');
     } catch (error) {
-      alert('falha no login, tente novamente.');
+      notify();
     }
   }
 
@@ -43,6 +55,17 @@ export default function Logon() {
           <button className="button" type="submit">
             Entrar
           </button>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+          />
 
           <Link className="back-link" to="/register">
             <FiLogIn size={16} color="#E02041" />

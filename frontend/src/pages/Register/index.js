@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import api from '../../services/api';
 import './styles.css';
@@ -28,8 +30,16 @@ export default function Register() {
 
     try {
       const response = await api.post('ongs', data);
-      alert(`Seu ID de acesso: ${response.data.id}`);
-      history.push('/');
+      const notify = () =>
+        toast.success(`🚀Seu ID de acesso: ${response.data.id}`, {
+          position: 'top-center',
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          onClose: history.push('/', { id: response.data.id }),
+        });
+      notify();
     } catch (error) {
       alert('Erro no cadastro, tente novamente.');
     }
@@ -89,6 +99,16 @@ export default function Register() {
           <button className="button" type="submit">
             Cadastrar
           </button>
+          <ToastContainer
+            position="top-center"
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+          />
         </form>
       </div>
     </div>
